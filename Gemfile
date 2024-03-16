@@ -21,6 +21,9 @@ gem 'puma', '~> 5.0'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
+# Use Sidekiq for background processing [https://github.com/sidekiq/sidekiq]
+gem 'sidekiq', '~> 7.2.1'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem 'bcrypt', '~> 3.1.7'
 

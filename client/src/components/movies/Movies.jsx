@@ -21,7 +21,11 @@ function Movies() {
         moviesList.length ? (
           <ul>
             {moviesList.map((movie) => (
-              <li key={movie.id}>{movie.title}</li>
+              <li key={movie.id}>
+                <a href={`/movies/${movie.id}`}>{movie.title}</a>
+                <p>{movie.director}</p>
+                <p>{movie.average_score}</p>
+              </li>
             ))}
           </ul>
         ) : (

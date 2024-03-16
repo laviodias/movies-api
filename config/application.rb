@@ -23,5 +23,8 @@ module MoviesApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Prevents active job logs because they are duplicates of sidekiq logs
+    config.active_job.logger = nil
   end
 end

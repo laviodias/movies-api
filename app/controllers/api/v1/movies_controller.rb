@@ -1,4 +1,5 @@
 class Api::V1::MoviesController < ApplicationController
+  require 'csv'
   # before_action :authenticate_user!
 
   def index
@@ -27,6 +28,11 @@ class Api::V1::MoviesController < ApplicationController
     else
       head :bad_request
     end
+  end
+
+  def create_from_csv
+    json = CSV.parse(params[:file].read, headers: true).map(&:to_h)
+    ImportMoviesFromCsv.perform_async(json)
   end
 
   private

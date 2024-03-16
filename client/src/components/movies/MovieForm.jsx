@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { createMovie, getMovie, updateMovie } from "../../api";
+import { createMovie, getMovie, updateMovie, uploadMoviesCsv } from "../../api";
 import { useParams } from "react-router";
 
 function MovieForm() {
   const [title, setTitle] = useState("");
   const [director, setDirector] = useState("");
+  const [file, setFile] = useState(null);
 
   const { id } = useParams();
-  console.log(id)
 
   useEffect(() => {
     if (id) {
@@ -22,6 +22,19 @@ function MovieForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      uploadMoviesCsv(formData)
+        .then(() => {
+          console.log("ok");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      return;
+    }
+
     if (id) {
       updateMovie({ id, title, director })
         .then(() => {
@@ -44,6 +57,9 @@ function MovieForm() {
   return (
     <div>
       <h1>{id ? "Edit" : "New"} Movie</h1>
+      {!id && (
+        <input type="file" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
+      )}
       <form onSubmit={onSubmit} method="POST">
         <div>
           <label htmlFor="title">Title:</label>
@@ -66,7 +82,7 @@ function MovieForm() {
           />
         </div>
         <div>
-          <button>Save</button>
+          <button>{file ? "Upload" : "Save"}</button>
         </div>
       </form>
     </div>

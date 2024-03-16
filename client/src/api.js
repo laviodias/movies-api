@@ -32,10 +32,19 @@ const updateMovie = async (movie) => {
   return response.json();
 }
 
+const uploadMoviesCsv = async (formData) => {
+  const response = await fetch(`${API_URL}/movies/create-from-csv`, {
+    method: 'POST',
+    body: formData
+  });
+  return response.json();
+}
+
 export {
   getMovies,
   createMovie,
   updateMovie,
-  getMovie
+  getMovie,
+  uploadMoviesCsv
 }
 
