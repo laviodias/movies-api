@@ -3,27 +3,28 @@ class MoviesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @movies = Movie.all
-    render json: @movies.to_json(methods: :average_score)
+    movies = Movie.all
+    render json: movies.to_json(methods: :average_score)
   end
 
   def show
-    @movie = Movie.find(params[:id])
-    render json: @movie.to_json(methods: :average_score)
+    movie = Movie.find(params[:id])
+
+    head :not_found if movie.nil?
+
+    user_score = UserMovie.find_by(user: current_user, movie:)&.score
+
+    render json: {
+      **movie.as_json,
+      average_score: movie.average_score,
+      user_score:
+    }
   end
 
   def create
-    @movie = Movie.new(movie_params)
-    if @movie.save
-      head :ok
-    else
-      head :bad_request
-    end
-  end
+    movie = Movie.new(movie_params)
 
-  def update
-    @movie = Movie.find(params[:id])
-    if @movie.update(movie_params)
+    if movie.save
       head :ok
     else
       head :bad_request
