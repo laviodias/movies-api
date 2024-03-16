@@ -13,11 +13,10 @@ export const RatingCell = (props) => {
       <Rating
         value={value === null ? "" : props.dataItem[field]}
         readonly={true}
-        precision={"half"}
       />
-
-      <button onClick={() => window.location.href = `/movies/${props.dataItem.id}/rate`}>Rate movie</button>
-      {" "}
+      <a href={`/movies/${props.dataItem.id}/rate`}>
+        <button>Rate movie</button>
+      </a>{" "}
     </td>
   );
 };

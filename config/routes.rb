@@ -20,4 +20,5 @@ Rails.application.routes.draw do
   resources :user_movies
 
   post 'movies/create-from-csv', to: 'movies#create_from_csv'
+  post 'user_movies/create-from-csv', to: 'user_movies#create_from_csv'
 end

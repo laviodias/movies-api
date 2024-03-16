@@ -10,4 +10,12 @@ class UserMoviesController < ApplicationController
       head :bad_request
     end
   end
+
+  def create_from_csv
+    file = params[:file]
+
+    scores = CSV.parse(file.read, headers: true).map(&:to_h)
+
+    ImportRatingsFromCsv.perform_async(scores, current_user.id)
+  end
 end
