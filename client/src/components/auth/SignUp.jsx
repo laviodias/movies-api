@@ -1,5 +1,6 @@
 import { useState } from "react";
-import api from "../../api";
+import { toast } from "react-toastify";
+import unsignedApi from "../../utils/unsignedApi";
 
 function SignUpView() {
   const [email, setEmail] = useState("");
@@ -8,9 +9,17 @@ function SignUpView() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    api.post("signup", {
-      user: { email, password, password_confirmation: passwordConfirmation },
-    });
+    unsignedApi
+      .post("signup", {
+        user: { email, password, password_confirmation: passwordConfirmation },
+      })
+      .then(({ headers }) => {
+        localStorage.setItem("authToken", headers.authorization);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        toast.error("Error signing up: " + err.response.data.message[0]);
+      });
   };
 
   return (
@@ -35,7 +44,9 @@ function SignUpView() {
           value={passwordConfirmation}
           onChange={(e) => setPasswordConfirmation(e.target.value)}
         />
-        <button>Sign Up</button>
+        <button disabled={password === "" || password !== passwordConfirmation}>
+          Sign Up
+        </button>
       </form>
     </div>
   );

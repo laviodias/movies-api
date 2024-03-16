@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import api from "../../api";
+import { Grid, GridColumn as Column } from "@progress/kendo-react-grid";
+import api from "../../utils/api";
+import { RatingCell } from "../shared/RatingCell";
 
 function Movies() {
   const [moviesList, setMoviesList] = useState([]);
 
   useEffect(() => {
     try {
-      api.get('movies').then((response) => {
+      api.get("movies").then((response) => {
         setMoviesList(response.data);
       });
     } catch (error) {
@@ -17,23 +19,20 @@ function Movies() {
   return (
     <div>
       <h1>Movies:</h1>
-      {
-        moviesList.length ? (
-          <ul>
-            {moviesList.map((movie) => (
-              <li key={movie.id}>
-                <a href={`/movies/${movie.id}`}>{movie.title}</a>
-                <p>{movie.director}</p>
-                <p>{movie.average_score}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No movies found</p>
-        )
-      }
+      <Grid
+        style={{
+          height: "400px",
+        }}
+        data={moviesList}
+      >
+        <Column field="title" title="Title" />
+        <Column field="director" title="Director" />
+        <Column field="average_score" title="Average Score" cells={{data: RatingCell}}/>
+      </Grid>
+
+      <a href="movies/new">Create new movie</a>
     </div>
-  )
+  );
 }
 
 export default Movies;

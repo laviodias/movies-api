@@ -31,8 +31,11 @@ class MoviesController < ApplicationController
   end
 
   def create_from_csv
-    json = CSV.parse(params[:file].read, headers: true).map(&:to_h)
-    ImportMoviesFromCsv.perform_async(json)
+    file = params[:file]
+
+    movies = CSV.parse(file.read, headers: true).map(&:to_h)
+
+    ImportMoviesFromCsv.perform_async(movies)
   end
 
   private

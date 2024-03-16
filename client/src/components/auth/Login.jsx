@@ -1,17 +1,21 @@
 import { useState } from "react";
-import api from "../../api";
+import unsignedApi from "../../utils/unsignedApi";
+import { toast } from "react-toastify";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    api
+    unsignedApi
       .post("/login", { user: { email, password } })
       .then(({ headers }) => {
         localStorage.setItem("authToken", headers.authorization);
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        toast.error(error.response.data.error);
       });
   };
   return (
@@ -32,6 +36,8 @@ function Login() {
         />
         <button>Login</button>
       </form>
+
+      <a href="/signup">Sign up</a>
     </div>
   );
 }

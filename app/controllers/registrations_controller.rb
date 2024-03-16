@@ -7,17 +7,21 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def create
-    super
-  end
+    build_resource(sign_up_params)
 
-  def respond_with(current_user, _opts = {})
-    if resource.persisted?
-      resources[0] = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
-      super
+    resource.save
+
+    sign_up(resource_name, resource)
+
+    if resource.persisted? && resource.active_for_authentication?
+      sign_in(resource_name, resource)
     else
+      clean_up_passwords resource
+      set_minimum_password_length
       render json: {
-        status: { message: "User couldn't be created successfully. #{current_user.errors.full_messages.to_sentence}" }
-      }, status: :unprocessable_entity
+        status: 500,
+        message: resource.errors.full_messages
+      }, status: :internal_server_error
     end
   end
 

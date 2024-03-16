@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../../api";
+import api from "../../utils/api";
 import { useParams } from "react-router";
+import { toast } from 'react-toastify';
 
 function MovieForm() {
   const [title, setTitle] = useState("");
@@ -11,45 +12,44 @@ function MovieForm() {
 
   useEffect(() => {
     if (id) {
-      api.get(`movie/${id}`)
-        .then((data) => {
-          setTitle(data.title);
-          setDirector(data.director);
-        });
+      api.get(`movie/${id}`).then((data) => {
+        setTitle(data.title);
+        setDirector(data.director);
+      });
     }
   }, [id]);
 
-
   const onSubmit = (e) => {
     e.preventDefault();
-    /* if(file) {
+    if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      uploadMoviesCsv(formData)
+      formData.append('teste', 'ola')
+      console.log('formData', formData)
+      api.post('movies/create-from-csv',
+       formData
+      ).then(() => {
+        console.log("ok");
+      }).catch((error) => {
+        console.error(error);
+      })
+    } else if (id) {
+      api
+        .put("movie", { movie: { id, title, director } })
         .then(() => {
-          console.log("ok");
+          toast.success('Movie updated');
         })
         .catch((error) => {
-          console.log(error);
-        });
-      return;
-    } */
-
-    if (id) {
-      api.put('movie', { movie: {id, title, director} })
-        .then(() => {
-          console.log("ok");
-        })
-        .catch((error) => {
-          console.log(error);
+          toast.error('Error updating movie');
         });
     } else {
-      api.post('movies', { movie: {title, director} })
+      api
+        .post("movies", { movie: { title, director } })
         .then(() => {
-          console.log("ok");
+          toast.success('Movie created');
         })
         .catch((error) => {
-          console.log(error);
+          toast.error('Error creating movie');
         });
     }
   };
@@ -58,7 +58,11 @@ function MovieForm() {
     <div>
       <h1>{id ? "Edit" : "New"} Movie</h1>
       {!id && (
-        <input type="file" accept=".csv" onChange={(e) => setFile(e.target.files[0])} />
+        <input
+          type="file"
+          accept=".csv"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
       )}
       <form onSubmit={onSubmit} method="POST">
         <div>
