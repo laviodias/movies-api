@@ -15,6 +15,8 @@ export const RatingCell = (props) => {
         readonly={true}
         precision={"half"}
       />
+
+      <button onClick={() => window.location.href = `/movies/${props.dataItem.id}/rate`}>Rate movie</button>
       {" "}
     </td>
   );
