@@ -1,4 +1,4 @@
-class Api::V1::UserMoviesController < ApplicationController
+class UserMoviesController < ApplicationController
   before_action :authenticate_user!
 
   def create

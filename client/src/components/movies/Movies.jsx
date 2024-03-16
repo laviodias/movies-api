@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { getMovies } from "../../api";
+import api from "../../api";
 
 function Movies() {
   const [moviesList, setMoviesList] = useState([]);
 
   useEffect(() => {
     try {
-      getMovies().then((data) => {
-        setMoviesList(data);
+      api.get('movies').then((response) => {
+        setMoviesList(response.data);
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, []);
 

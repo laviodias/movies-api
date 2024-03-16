@@ -1,50 +1,40 @@
-const API_URL = 'http://localhost:3000/api/v1';
+import axios from "axios";
 
-const getMovies = async () => {
-  const response = await fetch(`${API_URL}/movies`);
-  return response.json();
-}
+const API_URL = 'http://localhost:3000/';
 
-const getMovie = async (id) => {
-  const response = await fetch(`${API_URL}/movies/${id}`);
-  return response.json();
-}
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
 
-const createMovie = async (movie) => {
-  const response = await fetch(`${API_URL}/movies`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(movie)
-  });
-  return response.json();
-}
+api.interceptors.request.use((config) => {
+  config.headers["Authorization"] = localStorage.getItem(
+    "authToken"
+  );
+  return config;
+});
 
-const updateMovie = async (movie) => {
-  const response = await fetch(`${API_URL}/movies/${movie.id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(movie)
-  });
-  return response.json();
-}
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const response = error.response;
 
-const uploadMoviesCsv = async (formData) => {
-  const response = await fetch(`${API_URL}/movies/create-from-csv`, {
-    method: 'POST',
-    body: formData
-  });
-  return response.json();
-}
+    if (response.status === 401) {
+      window.location.href = "/login";
+      throw response?.data?.error || "Unauthorized";
+    }
 
-export {
-  getMovies,
-  createMovie,
-  updateMovie,
-  getMovie,
-  uploadMoviesCsv
-}
+    if (response.status === 403) {
+      window.location.href = "/";
+      throw response?.data?.error || "Forbidden";
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default api;
 

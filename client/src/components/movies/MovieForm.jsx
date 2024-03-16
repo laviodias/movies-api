@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createMovie, getMovie, updateMovie, uploadMoviesCsv } from "../../api";
+import api from "../../api";
 import { useParams } from "react-router";
 
 function MovieForm() {
@@ -11,7 +11,7 @@ function MovieForm() {
 
   useEffect(() => {
     if (id) {
-      getMovie(id)
+      api.get(`movie/${id}`)
         .then((data) => {
           setTitle(data.title);
           setDirector(data.director);
@@ -22,7 +22,7 @@ function MovieForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if(file) {
+    /* if(file) {
       const formData = new FormData();
       formData.append("file", file);
       uploadMoviesCsv(formData)
@@ -33,10 +33,10 @@ function MovieForm() {
           console.log(error);
         });
       return;
-    }
+    } */
 
     if (id) {
-      updateMovie({ id, title, director })
+      api.put('movie', { movie: {id, title, director} })
         .then(() => {
           console.log("ok");
         })
@@ -44,7 +44,7 @@ function MovieForm() {
           console.log(error);
         });
     } else {
-      createMovie({ title, director })
+      api.post('movies', { movie: {title, director} })
         .then(() => {
           console.log("ok");
         })

@@ -1,6 +1,6 @@
-class Api::V1::MoviesController < ApplicationController
+class MoviesController < ApplicationController
   require 'csv'
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def index
     @movies = Movie.all
