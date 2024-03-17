@@ -1,3 +1,4 @@
+# Controller to handle ratings creation and import from CSV
 class RatingsController < ApplicationController
   before_action :authenticate_user!
 

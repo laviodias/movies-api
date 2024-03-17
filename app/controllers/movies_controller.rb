@@ -1,3 +1,4 @@
+# Controller to handle movies default actions and import from CSV
 class MoviesController < ApplicationController
   require 'csv'
   before_action :authenticate_user!

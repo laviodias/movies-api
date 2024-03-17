@@ -1,3 +1,5 @@
+# Handles user sessions
+# Overwrites Devise SessionsController
 class SessionsController < Devise::SessionsController
   include RackSessionsFix
   respond_to :json

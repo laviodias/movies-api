@@ -1,3 +1,4 @@
+# User class with associations and devise configurations
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 

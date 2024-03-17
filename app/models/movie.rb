@@ -1,3 +1,4 @@
+# Movie associations, validations and helper methods
 class Movie < ApplicationRecord
   belongs_to :user
   has_many :ratings, dependent: :destroy
