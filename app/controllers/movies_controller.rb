@@ -8,7 +8,7 @@ class MoviesController < ApplicationController
   end
 
   def show
-    movie = Movie.find(params[:id]).includes(:ratings, :user)
+    movie = Movie.includes(:ratings, :user).find(params[:id])
 
     head :not_found if movie.nil?
 
@@ -22,7 +22,7 @@ class MoviesController < ApplicationController
     if movie.save
       head :ok
     else
-      head :bad_request
+      render json: { errors: movie.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

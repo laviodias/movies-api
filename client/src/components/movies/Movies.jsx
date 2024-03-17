@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Grid, GridColumn as Column } from "@progress/kendo-react-grid";
 import api from "../../utils/api";
 import { RatingCell } from "../shared/RatingCell";
@@ -10,9 +10,24 @@ const initialFilter = {
   filters: [],
 };
 
+const initialColumns = [
+  { field: "id", title: "ID", filterable: false, width: "70px", minGridWidth: 500 },
+  { field: "title", title: "Title" },
+  { field: "director", title: "Director" },
+  { field: "creator", title: "Created by", minGridWidth: 500 },
+  {
+    field: "average_score",
+    title: "Average Score",
+    filterable: false,
+    cell: RatingCell,
+  },
+];
+
 function Movies() {
   const [moviesList, setMoviesList] = useState([]);
   const [filter, setFilter] = useState(initialFilter);
+  const [columns, setColumns] = useState(initialColumns);
+
 
   useEffect(() => {
     let ignore = false;
@@ -30,6 +45,8 @@ function Movies() {
       ignore = true;
     };
   }, []);
+
+
 
   const handleRatingCsvImport = () => {
     const fileInput = document.createElement("input");
@@ -59,6 +76,26 @@ function Movies() {
     });
   };
 
+
+  const handleResize = useCallback(() => {
+      const grid = document.querySelector(".k-grid");
+      const currentVisibleColumns = columns.filter(
+        (c) => !(c.minGridWidth > grid.offsetWidth)
+      );
+      if (currentVisibleColumns.length !== columns.length) {
+        setColumns(currentVisibleColumns);
+      }
+  }, [columns])
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    }
+  }, [handleResize]);
+
   return (
     <div>
       <h1 className="is-size-1 mb-2">Movies</h1>
@@ -73,19 +110,14 @@ function Movies() {
         onFilterChange={(e) => setFilter(e.filter)}
         resizable
       >
-        <Column field="id" title="ID" filterable={false} width={"70px"} />
-        <Column field="title" title="Title" />
-        <Column field="director" title="Director" />
-        <Column field="creator" title="Created by" />
-        <Column
-          field="average_score"
-          title="Average Score"
-          cells={{ data: RatingCell }}
-          filterable={false}
-        />
+        {columns.map((column, index) => {
+          return (
+            <Column field={column.field} title={column.title} key={index} width={column?.width} filterable={column?.filterable} cell={column?.cell}/>
+          );
+        })}
       </Grid>
 
-      <div className="is-flex is-justify-content-center is-align-items-center mt-6">
+      <div className="is-flex is-justify-content-center is-align-items-center mt-6 column-mobile">
         <a href="movies/new" className="button">
           Add new movie
         </a>

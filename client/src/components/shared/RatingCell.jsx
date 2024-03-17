@@ -13,10 +13,15 @@ export const RatingCell = (props) => {
       <Rating
         value={value === null ? "" : props.dataItem[field]}
         readonly={true}
+        className="is-hidden-mobile"
       />
+      <span className="is-hidden-tablet">
+        {value || "-"}
+      </span>
+
       <a href={`/movies/${props.dataItem.id}/rate`} className="button is-small ml-4">
-        Rate movie
-      </a>{" "}
+        Rate
+      </a>
     </td>
   );
 };

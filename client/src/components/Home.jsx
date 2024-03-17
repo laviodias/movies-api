@@ -43,8 +43,13 @@ function Home() {
                     <p>{movie.title}</p>
                     <p>Director: {movie.director}</p>
                     <p>Average score: {movie.average_score || "-"}/5</p>
+                    <p className="is-hidden-tablet">
+                      Created at: {movie.created_at}
+                    </p>
                   </div>
-                  <p>Created at: {movie.created_at}</p>
+                  <p className="is-hidden-mobile">
+                    Created at: {movie.created_at}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -56,7 +61,7 @@ function Home() {
       ) : (
         <section className="box p-4 has-text-centered">
           <h3 className="is-size-4 mb-4">You have not added any movies yet</h3>
-          <div className="is-flex is-align-items-center is-justify-content-center">
+          <div className="is-flex is-align-items-center is-justify-content-center column-mobile">
             <a href="/movies/new" className="button">
               Add a movie now
             </a>

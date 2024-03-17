@@ -43,8 +43,8 @@ function MovieForm() {
       .then(() => {
         toast.success("Movie created successfully");
       })
-      .catch(() => {
-        toast.error("Error creating movie");
+      .catch((err) => {
+        toast.error("Error creating movie: " + err.response.data.errors || "Unknown error");
       });
   };
 
@@ -52,7 +52,7 @@ function MovieForm() {
     <section>
       <h1 className="is-size-1 mb-2">New Movie</h1>
 
-      <section className="is-flex  is-align-items-flex-start">
+      <section className="is-flex-tablet is-align-items-flex-start">
         <form
           onSubmit={onSubmit}
           method="POST"

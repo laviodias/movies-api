@@ -43,14 +43,16 @@ function RateMovie() {
     <div>
       <h1 className="is-size-1">Rate Movie</h1>
 
-      <section className="box">
-        <h2>{movie.title}</h2>
-        <h3>{movie.director}</h3>
-        <p>
-          Average score: {movie.average_score} ({movie.rating_count} votes)
-        </p>
+      <section className="box is-flex-tablet is-align-items-center">
+        <div>
+          <h2 className="is-size-4">{movie.title}</h2>
+          <h3>Director: {movie.director}</h3>
+          <p>
+            Average score: {movie.average_score} ({movie.rating_count} votes)
+          </p>
+        </div>
 
-        <div className="is-flex">
+        <div className="is-flex-tablet mt-4 ml-6">
           <Rating value={rating} onChange={(e) => setRating(e.value)} />
           <button className="button ml-4" onClick={onSubmit}>
             Rate
