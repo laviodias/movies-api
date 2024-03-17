@@ -39,9 +39,13 @@ gem 'bootsnap', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+# Alba serializer [https://github.com/okuramasafumi/alba]
 gem 'alba'
 
+# Devise for authentication [https://github.com/heartcombo/devise]
 gem 'devise'
+
+# Devise JWT for JWT authentication [https://github.com/waiting-for-dev/devise-jwt]
 gem 'devise-jwt'
 
 group :development, :test do
