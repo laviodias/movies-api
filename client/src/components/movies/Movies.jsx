@@ -15,13 +15,20 @@ function Movies() {
   const [filter, setFilter] = useState(initialFilter);
 
   useEffect(() => {
-    try {
-      api.get("movies").then((response) => {
+    let ignore = false;
+    api
+      .get("movies")
+      .then((response) => {
+        if (ignore) return;
         setMoviesList(response.data);
+      })
+      .catch(() => {
+        toast.error("Error loading movies");
       });
-    } catch (error) {
-      toast.error("Error loading movies");
-    }
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const handleRatingCsvImport = () => {
@@ -36,13 +43,15 @@ function Movies() {
       formData.append("file", file);
 
       api
-        .post("user_movies/create-from-csv", formData, {
+        .post("ratings/create-from-csv", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then(() => {
-          toast.success("Ratings imported successfully");
+          toast.success(
+            "Ratings imported successfully. This task is async, so it may take a while to see the changes."
+          );
         })
         .catch(() => {
           toast.error("Error importing ratings");
@@ -52,7 +61,8 @@ function Movies() {
 
   return (
     <div>
-      <h1>Movies:</h1>
+      <h1 className="is-size-1 mb-2">Movies</h1>
+
       <Grid
         style={{
           height: "500px",
@@ -63,9 +73,10 @@ function Movies() {
         onFilterChange={(e) => setFilter(e.filter)}
         resizable
       >
-        <Column field="id" title="ID" filterable={false} width={"50px"} />
+        <Column field="id" title="ID" filterable={false} width={"70px"} />
         <Column field="title" title="Title" />
         <Column field="director" title="Director" />
+        <Column field="creator" title="Created by" />
         <Column
           field="average_score"
           title="Average Score"
@@ -74,8 +85,15 @@ function Movies() {
         />
       </Grid>
 
-      <a href="movies/new">Create new movie</a>
-      <button onClick={handleRatingCsvImport}>Import rating CSV</button>
+      <div className="is-flex is-justify-content-center is-align-items-center mt-6">
+        <a href="movies/new" className="button">
+          Add new movie
+        </a>
+        <span className="mx-2">or</span>
+        <button className="button" onClick={handleRatingCsvImport}>
+          Import ratings from CSV
+        </button>
+      </div>
     </div>
   );
 }

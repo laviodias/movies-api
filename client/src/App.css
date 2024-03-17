@@ -1,42 +1,33 @@
-#root {
-  max-width: 1280px;
+/* Bulma CSS: https://bulma.io/*/
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+main {
+  width: 1366px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 2rem 0;
+  max-width: 90%;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+ul {
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+:root {
+  --dark-purple: #271f30;
+  --umber: #6c5a49;
+  --tea-green: #d0fcb3;
+  --celadon: #9bc59d;
+  --gold: #c8ad55;
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  --white: #fff;
+  --black: #000;
+  --grey: #f5f5f5;
 }

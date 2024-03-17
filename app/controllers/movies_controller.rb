@@ -3,26 +3,21 @@ class MoviesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    movies = Movie.all
-    render json: movies.to_json(methods: :average_score)
+    movies = Movie.all.order(created_at: :desc)
+    render json: MovieSerializer::Summary.new(movies).serializable_hash
   end
 
   def show
-    movie = Movie.find(params[:id])
+    movie = Movie.find(params[:id]).includes(:ratings, :user)
 
     head :not_found if movie.nil?
 
-    user_score = UserMovie.find_by(user: current_user, movie:)&.score
-
-    render json: {
-      **movie.as_json,
-      average_score: movie.average_score,
-      user_score:
-    }
+    render json: MovieSerializer::Full.new(movie, params: { current_user: })
   end
 
   def create
     movie = Movie.new(movie_params)
+    movie.user = current_user
 
     if movie.save
       head :ok
@@ -31,12 +26,20 @@ class MoviesController < ApplicationController
     end
   end
 
+  def find_by_user
+    movies = Movie.where(user: current_user).order(created_at: :desc)
+    render json: {
+      movies: MovieSerializer::Extended.new(movies).serializable_hash,
+      user_name: current_user.name
+    }
+  end
+
   def create_from_csv
     file = params[:file]
 
     movies = CSV.parse(file.read, headers: true).map(&:to_h)
 
-    ImportMoviesFromCsv.perform_async(movies)
+    ImportMoviesFromCsv.perform_async(movies, current_user.id)
   end
 
   private

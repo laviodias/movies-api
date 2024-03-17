@@ -5,6 +5,6 @@ class User < ApplicationRecord
          :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  has_many :user_movies
-  has_many :movies, through: :user_movies
+  has_many :ratings
+  has_many :movies
 end

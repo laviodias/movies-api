@@ -10,35 +10,53 @@ function RateMovie() {
   const { id } = useParams();
 
   useEffect(() => {
+    let ignore = false;
+
     api
-      .get(`movies/${id}`)
+      .get(`movies/show/${id}`)
       .then(({ data }) => {
+        if (ignore) return;
         setMovie(data);
-        setRating(data.average_score);
+        if (data.user_score) setRating(data.user_score);
       })
       .catch(() => {
         toast.error("Error loading movie");
       });
+
+    return () => {
+      ignore = true;
+    };
   }, [id]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     api
-      .post(`user_movies`, { movie_id: id, score: rating })
+      .post("ratings", { movie_id: id, score: rating })
       .then(() => {
         toast.success("Movie rated successfully");
       })
       .catch(() => {
         toast.error("Error rating movie");
       });
-  }
+  };
   return (
     <div>
-      <h1>Rate Movie</h1>
-      <h2>{movie.title}</h2>
-      <h3>{movie.director}</h3>
-        <Rating value={rating} onChange={(e) => setRating(e.value)} />
-        <button onClick={onSubmit}>Rate</button>
+      <h1 className="is-size-1">Rate Movie</h1>
+
+      <section className="box">
+        <h2>{movie.title}</h2>
+        <h3>{movie.director}</h3>
+        <p>
+          Average score: {movie.average_score} ({movie.rating_count} votes)
+        </p>
+
+        <div className="is-flex">
+          <Rating value={rating} onChange={(e) => setRating(e.value)} />
+          <button className="button ml-4" onClick={onSubmit}>
+            Rate
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

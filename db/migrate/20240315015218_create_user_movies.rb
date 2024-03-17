@@ -1,3 +1,4 @@
+# Creates user movies table to store user ratings
 class CreateUserMovies < ActiveRecord::Migration[7.1]
   def change
     create_table :user_movies do |t|

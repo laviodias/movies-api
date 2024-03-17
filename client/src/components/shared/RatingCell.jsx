@@ -9,13 +9,13 @@ export const RatingCell = (props) => {
   }
 
   return (
-    <td {...props.tdProps}>
+    <td {...props.tdProps} className="is-flex is-align-items-center">
       <Rating
         value={value === null ? "" : props.dataItem[field]}
         readonly={true}
       />
-      <a href={`/movies/${props.dataItem.id}/rate`}>
-        <button>Rate movie</button>
+      <a href={`/movies/${props.dataItem.id}/rate`} className="button is-small ml-4">
+        Rate movie
       </a>{" "}
     </td>
   );

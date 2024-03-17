@@ -4,11 +4,12 @@ import MovieForm from "../components/movies/MovieForm";
 import Login from "../components/auth/Login";
 import SignUpView from "../components/auth/SignUp";
 import RateMovie from "../components/movies/RateMovie";
+import Home from "../components/Home";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<h1>home</h1>} />
+      <Route path="/" element={<Home />} />
 
       {/* Movies routes */}
       <Route path="/movies" element={<Movies />} />

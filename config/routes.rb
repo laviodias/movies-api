@@ -16,9 +16,13 @@ Rails.application.routes.draw do
                registrations: 'registrations'
              }
 
-  resources :movies
-  resources :user_movies
+  get 'movies/find-by-user', to: 'movies#find_by_user'
+  get 'movies/show/:id', to: 'movies#show'
+  get 'movies', to: 'movies#index'
+  post 'movies', to: 'movies#create'
+
+  resources :ratings
 
   post 'movies/create-from-csv', to: 'movies#create_from_csv'
-  post 'user_movies/create-from-csv', to: 'user_movies#create_from_csv'
+  post 'ratings/create-from-csv', to: 'ratings#create_from_csv'
 end

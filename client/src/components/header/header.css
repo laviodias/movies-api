@@ -1,0 +1,28 @@
+header {
+  padding: 1rem 2rem;
+  background-color: var(--umber);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 -1rem;
+  color: var(--white);
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    > a {
+      color: var(--white);
+    }
+  }
+
+  > nav > ul {
+    gap: 1rem;
+
+    > li > a {
+      color: var(--white);
+
+      &:hover {
+        color: var(--black);
+      }
+    }
+  }
+}
