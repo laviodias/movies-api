@@ -39,6 +39,9 @@ gem 'bootsnap', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+# Json enconder/decoder lib that is faster than Ruby standard json lib
+gem 'oj', '~> 3.13.23'
+
 # Alba serializer [https://github.com/okuramasafumi/alba]
 gem 'alba'
 
