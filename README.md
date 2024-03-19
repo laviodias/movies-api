@@ -22,7 +22,7 @@ Now that you have all the requirements, follow these steps:
 ```git clone git@github.com:laviodias/movies-api.git``` if you use SSH
 or ```https://github.com/laviodias/movies-api.git``` if you prefer to use HTTPS.
 
-Create a new file `/config/master.key` and set it value to `f5183ecff405d40564531261ab30c014`.
+- Create a new file `/config/master.key` and set it value to `f5183ecff405d40564531261ab30c014`.
 
 - On the root folder, run:
 ```ruby
