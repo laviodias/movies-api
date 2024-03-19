@@ -32,10 +32,10 @@ RSpec.describe User, type: :model do
       expect(user.errors[:email]).to include('has already been taken')
     end
 
-    it 'is invalid with a password less than 6 characters' do
-      user = User.new(password: '12345')
+    it 'is invalid with a password less than 5 characters' do
+      user = User.new(password: '1234')
       user.valid?
-      expect(user.errors[:password]).to include('is too short (minimum is 6 characters)')
+      expect(user.errors[:password]).to include('is too short (minimum is 5 characters)')
     end
 
     it 'is invalid with a password more than 128 characters' do
